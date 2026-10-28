@@ -1576,6 +1576,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			},
 		},
 	}
+	configureCustomEntitlementPolicyAliases(&resp.Schema)
 }
 
 func (r *CustomAppEntitlementResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
@@ -1616,7 +1617,13 @@ func (r *CustomAppEntitlementResource) Create(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsCreateRequest(ctx)
+	writeData := *data
+	resp.Diagnostics.Append(selectCustomEntitlementPolicyForWrite(ctx, req.Config, &writeData)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	request, requestDiags := writeData.ToOperationsC1APIAppV1AppEntitlementsCreateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -1707,6 +1714,7 @@ func (r *CustomAppEntitlementResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementResponse(ctx, res.GetAppEntitlementResponse)...)
+	syncCustomEntitlementPolicyAliases(data)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1740,7 +1748,13 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsUpdateRequest(ctx)
+	writeData := *data
+	resp.Diagnostics.Append(selectCustomEntitlementPolicyForWrite(ctx, req.Config, &writeData)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	request, requestDiags := writeData.ToOperationsC1APIAppV1AppEntitlementsUpdateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
