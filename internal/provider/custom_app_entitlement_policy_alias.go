@@ -20,6 +20,7 @@ func configureCustomEntitlementPolicyAliases(s *schema.Schema) diag.Diagnostics 
 	if !ok {
 		return diag.Diagnostics{diag.NewErrorDiagnostic("Invalid policy schema", "The generated provision_policy attribute must be a single nested attribute.")}
 	}
+	canonical.MarkdownDescription += "\n\nConfigure either `provision_policy` or `provisioner_policy`, but not both. Both refer to the same provisioning policy."
 	canonical.PlanModifiers = append(canonical.PlanModifiers, objectplanmodifier.UseStateForUnknown())
 	canonical.Validators = append(canonical.Validators, objectvalidator.ConflictsWith(path.MatchRoot("provisioner_policy")))
 	s.Attributes["provision_policy"] = canonical
