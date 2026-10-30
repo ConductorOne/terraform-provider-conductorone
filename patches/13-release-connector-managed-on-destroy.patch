@@ -1,0 +1,44 @@
+Subject: [PATCH] Release connector-managed rows on destroy instead of deleting
+
+ConductorOne refuses to delete connector-synced app resources and entitlements
+(for example rows adopted via match_baton_id), so the generated Delete makes
+terraform destroy fail with FailedPrecondition. Hook the hand-maintained
+releaseConnectorManagedAppResource / releaseConnectorManagedAppEntitlement
+(connector_managed_release.go) into Delete: they re-read the row and skip the
+DELETE when it is already gone or connector-managed (warning, state-only
+removal).
+
+diff --git a/internal/provider/app_resource_resource.go b/internal/provider/app_resource_resource.go
+index 64eaf696..019b2c6f 100644
+--- a/internal/provider/app_resource_resource.go
++++ b/internal/provider/app_resource_resource.go
+@@ -492,6 +492,12 @@ func (r *AppResourceResource) Delete(ctx context.Context, req resource.DeleteReq
+ 		return
+ 	}
+ 
++	skipDelete, releaseDiags := releaseConnectorManagedAppResource(ctx, r.client, data)
++	resp.Diagnostics.Append(releaseDiags...)
++	if skipDelete || resp.Diagnostics.HasError() {
++		return
++	}
++
+ 	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest(ctx)
+ 	resp.Diagnostics.Append(requestDiags...)
+ 
+diff --git a/internal/provider/custom_app_entitlement_resource.go b/internal/provider/custom_app_entitlement_resource.go
+index 0c60bde4..b623494f 100644
+--- a/internal/provider/custom_app_entitlement_resource.go
++++ b/internal/provider/custom_app_entitlement_resource.go
+@@ -1875,6 +1875,12 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
+ 		return
+ 	}
+ 
++	skipDelete, releaseDiags := releaseConnectorManagedAppEntitlement(ctx, r.client, data)
++	resp.Diagnostics.Append(releaseDiags...)
++	if skipDelete || resp.Diagnostics.HasError() {
++		return
++	}
++
+ 	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsDeleteRequest(ctx)
+ 	resp.Diagnostics.Append(requestDiags...)
+ 

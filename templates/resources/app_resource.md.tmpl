@@ -12,6 +12,12 @@ description: |-
 This resource allows you to create and configure an AppResource object in ConductorOne.
 When creating an AppResource you must provide a display name, app_id and app_resource_type_id. Optionally, you can provide a description.
 
+## Destroy behavior
+
+Destroying this resource deletes the app resource only if it was created in ConductorOne and is not managed by a connector (`is_manually_managed = true`).
+If the app resource is managed by a connector (for example, it was adopted or merged with a connector-synced row via `match_baton_id`), ConductorOne cannot delete it. In that case `terraform destroy` **releases** it: Terraform removes it from state and emits a warning, but leaves it unchanged in ConductorOne, where the connector keeps it in sync. Applying the configuration again adopts the same ID.
+If the app resource is already gone, destroy succeeds without calling the API to delete it.
+
 ## Example Usage
 
 {{ tffile "examples/resources/conductorone_app_resource/resource.tf" }}
