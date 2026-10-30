@@ -12,8 +12,10 @@ import (
 // Destroy semantics for rows that may be backed by a connector (for example,
 // rows adopted via match_baton_id or later merged with a connector-synced row).
 //
-// ConductorOne refuses to delete connector-synced rows, so a blind DELETE makes
-// `terraform destroy` fail. Before deleting, the generated Delete functions
+// A connector, not Terraform, decides whether a connector-synced row exists.
+// ConductorOne rejects deleting connector-synced app resources, so a blind
+// DELETE makes `terraform destroy` fail; for entitlements it would remove a
+// live row until the next sync restores it. Before deleting, the generated Delete functions
 // call the helpers below, which re-read the row and decide:
 //
 //   - 404 or deleted_at set: already gone; skip DELETE, succeed.
@@ -27,7 +29,7 @@ import (
 
 const (
 	connectorManagedReleaseSummary = "Resource released, not deleted"
-	connectorManagedReleaseDetail  = "%s %q is managed by a connector in ConductorOne, so it cannot be deleted. " +
+	connectorManagedReleaseDetail  = "%s %q is managed by a connector in ConductorOne, so Terraform does not delete it. " +
 		"It was removed from Terraform state only; the row in ConductorOne was left unchanged and the connector keeps it in sync. " +
 		"Applying this configuration again adopts the same ID."
 )

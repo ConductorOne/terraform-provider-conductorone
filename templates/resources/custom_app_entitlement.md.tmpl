@@ -16,7 +16,7 @@ This is different than the App Entitlement resource which only allows you to upd
 ## Destroy behavior
 
 Destroying this resource deletes the entitlement only if it was created in ConductorOne and is not managed by a connector (`is_manually_managed = true`).
-If the entitlement is managed by a connector (for example, it was adopted or merged with a connector-synced row via `match_baton_id`), ConductorOne cannot delete it. In that case `terraform destroy` **releases** it: Terraform removes it from state and emits a warning, but leaves it unchanged in ConductorOne, where the connector keeps it in sync. Applying the configuration again adopts the same ID.
+If the entitlement is managed by a connector (for example, it was adopted or merged with a connector-synced row via `match_baton_id`), Terraform does not delete it. Instead `terraform destroy` **releases** it: Terraform removes it from state and emits a warning, but leaves it unchanged in ConductorOne, where the connector keeps it in sync. Applying the configuration again adopts the same ID.
 If the entitlement is already gone, destroy succeeds without calling the API to delete it.
 
 ## Example Usage

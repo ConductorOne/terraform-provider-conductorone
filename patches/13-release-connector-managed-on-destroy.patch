@@ -1,8 +1,9 @@
 Subject: [PATCH] Release connector-managed rows on destroy instead of deleting
 
-ConductorOne refuses to delete connector-synced app resources and entitlements
-(for example rows adopted via match_baton_id), so the generated Delete makes
-terraform destroy fail with FailedPrecondition. Hook the hand-maintained
+ConductorOne refuses to delete connector-synced app resources (for example rows
+adopted via match_baton_id), so the generated Delete makes terraform destroy
+fail with FailedPrecondition; for entitlements it removes a live row until the
+next sync restores it. Hook the hand-maintained
 releaseConnectorManagedAppResource / releaseConnectorManagedAppEntitlement
 (connector_managed_release.go) into Delete: they re-read the row and skip the
 DELETE when it is already gone or connector-managed (warning, state-only
