@@ -202,3 +202,39 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 }
+
+// TestDeleteReleasesConnectorManagedRows verifies patches/13 is still applied:
+// the generated Delete functions must consult the hand-maintained release
+// helpers (connector_managed_release.go) before calling the DELETE API, so
+// destroying a connector-synced row (e.g. adopted via match_baton_id) releases
+// it from state instead of failing with FailedPrecondition.
+func TestDeleteReleasesConnectorManagedRows(t *testing.T) {
+	cases := map[string]string{
+		"app_resource_resource.go":           "releaseConnectorManagedAppResource(ctx, r.client, data)",
+		"custom_app_entitlement_resource.go": "releaseConnectorManagedAppEntitlement(ctx, r.client, data)",
+	}
+	for file, call := range cases {
+		data, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", file, err)
+		}
+		src := string(data)
+		start := strings.Index(src, "Resource) Delete(ctx context.Context")
+		if start < 0 {
+			t.Fatalf("%s: Delete function not found", file)
+		}
+		end := strings.Index(src[start:], "\n}\n")
+		if end < 0 {
+			t.Fatalf("%s: end of Delete function not found", file)
+		}
+		body := src[start : start+end]
+		hook := strings.Index(body, call)
+		if hook < 0 {
+			t.Errorf("%s: Delete no longer calls %s — re-apply patches/13-release-connector-managed-on-destroy.patch", file, call)
+			continue
+		}
+		if del := strings.Index(body, "r.client."); del >= 0 && del < hook {
+			t.Errorf("%s: Delete calls the API before %s", file, call)
+		}
+	}
+}
