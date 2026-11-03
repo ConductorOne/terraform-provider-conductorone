@@ -143,6 +143,20 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 	if d := out.State.Get(ctx, &result); d.HasError() || result.ID.ValueString() != "ent1" {
 		t.Fatalf("ID changed or state invalid: %v %v", result.ID, d)
 	}
+	// Terraform may mark an unconfigured computed policy unknown even after
+	// refresh. Restore it only when the entire plan otherwise equals state.
+	var unknownValues map[string]tftypes.Value
+	if err := out.State.Raw.As(&unknownValues); err != nil {
+		t.Fatal(err)
+	}
+	deprovisionerType := unknownValues["deprovisioner_policy"].Type()
+	unknownValues["deprovisioner_policy"] = tftypes.NewValue(deprovisionerType, tftypes.UnknownValue)
+	unknownPlan := tfsdk.Plan{Schema: sr.Schema, Raw: tftypes.NewValue(out.State.Raw.Type(), unknownValues)}
+	modified := &resource.ModifyPlanResponse{Plan: unknownPlan}
+	r.ModifyPlan(ctx, resource.ModifyPlanRequest{State: out.State, Plan: unknownPlan, Config: cfg}, modified)
+	if modified.Diagnostics.HasError() || !modified.Plan.Raw.Equal(out.State.Raw) {
+		t.Fatalf("unchanged imported policy plan was not restored: %v", modified.Diagnostics)
+	}
 	second, err := ps.PlanResourceChange(ctx, &tfprotov6.PlanResourceChangeRequest{TypeName: "conductorone_custom_app_entitlement", PriorState: dynamic(out.State.Raw), ProposedNewState: dynamic(out.State.Raw), Config: dynamic(cfg.Raw)})
 	if err != nil {
 		t.Fatal(err)

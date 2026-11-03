@@ -9,9 +9,8 @@ import (
 
 var _ resource.ResourceWithModifyPlan = (*CustomAppEntitlementResource)(nil)
 
-// ModifyPlan removes the spurious update caused by an unconfigured, formerly
-// computed-only provisioner_policy. The framework marks computed values
-// unknown before its attribute plan modifiers restore that alias from state.
+// ModifyPlan removes spurious updates when the framework marks computed
+// policy fields unknown even though the configured values are unchanged.
 // Only restore unknowns when every configured value is known and the entire
 // resulting plan matches prior state; real changes and deferred config retain
 // their original plan.
@@ -19,8 +18,8 @@ func (r *CustomAppEntitlementResource) ModifyPlan(ctx context.Context, req resou
 	if req.State.Raw.IsNull() || req.Plan.Raw.IsNull() {
 		return
 	}
-	alias, diags := selectedCustomPolicyAlias(ctx, req.Config)
-	if diags.HasError() || alias != "provision_policy" {
+	_, diags := selectedCustomPolicyAlias(ctx, req.Config)
+	if diags.HasError() {
 		return
 	}
 	restored, ok := unchangedPolicyAliasPlan(req.Config.Raw, resp.Plan.Raw, req.State.Raw)
