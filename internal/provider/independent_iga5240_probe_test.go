@@ -27,7 +27,11 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 			updateBody, _ = io.ReadAll(r.Body)
 			t.Logf("request %s %s body=%s", r.Method, r.URL, updateBody)
 		}
-		io.WriteString(w, `{"appEntitlementView":{"appEntitlement":{"id":"ent1","appId":"app1","displayName":"original","appResourceId":"res1","appResourceTypeId":"type1","provisionerPolicy":{"delegated":{"appId":"app2","entitlementId":"ent2"}}}}}`)
+		name := "original"
+		if r.Method != "GET" {
+			name = "renamed"
+		}
+		_, _ = io.WriteString(w, `{"appEntitlementView":{"appEntitlement":{"id":"ent1","appId":"app1","displayName":"`+name+`","appResourceId":"res1","appResourceTypeId":"type1","grantPolicyId":"grant1","revokePolicyId":"revoke1","deprovisionerPolicy":{"manual":{"instructions":"retain"}},"provisionerPolicy":{"delegated":{"appId":"app2","entitlementId":"ent2"}}}}}`)
 	}))
 	defer server.Close()
 	r := &CustomAppEntitlementResource{client: sdk.New(sdk.WithServerURL(server.URL))}
@@ -121,11 +125,35 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 	if !ok || delegated["appId"] != "app2" || delegated["entitlementId"] != "ent2" {
 		t.Fatalf("refreshed delegated policy changed: %s", updateBody)
 	}
+	if entitlement["grantPolicyId"] != "grant1" || entitlement["revokePolicyId"] != "revoke1" {
+		t.Fatalf("unrelated policy IDs changed: %s", updateBody)
+	}
+	deprovisioner, ok := entitlement["deprovisionerPolicy"].(map[string]any)
+	if !ok {
+		t.Fatalf("deprovisioner missing: %s", updateBody)
+	}
+	manual, ok := deprovisioner["manual"].(map[string]any)
+	if !ok || manual["instructions"] != "retain" {
+		t.Fatalf("deprovisioner changed: %s", updateBody)
+	}
 	if _, ok := body["updateMask"]; ok {
 		t.Fatalf("mask unexpectedly included: %s", updateBody)
 	}
 	var result CustomAppEntitlementResourceModel
 	if d := out.State.Get(ctx, &result); d.HasError() || result.ID.ValueString() != "ent1" {
 		t.Fatalf("ID changed or state invalid: %v %v", result.ID, d)
+	}
+	second, err := ps.PlanResourceChange(ctx, &tfprotov6.PlanResourceChangeRequest{TypeName: "conductorone_custom_app_entitlement", PriorState: dynamic(out.State.Raw), ProposedNewState: dynamic(out.State.Raw), Config: dynamic(cfg.Raw)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, d := range second.Diagnostics {
+		if d.Severity == tfprotov6.DiagnosticSeverityError {
+			t.Fatalf("second plan %s: %s", d.Summary, d.Detail)
+		}
+	}
+	secondState, err := second.PlannedState.Unmarshal(out.State.Raw.Type())
+	if err != nil || !secondState.Equal(out.State.Raw) {
+		t.Fatalf("subsequent plan changed state: %v", err)
 	}
 }
