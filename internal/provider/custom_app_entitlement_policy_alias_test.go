@@ -58,3 +58,38 @@ func TestCustomEntitlementPolicyAliasRefreshAndWrite(t *testing.T) {
 		t.Fatalf("sent %q", got)
 	}
 }
+
+func TestCustomEntitlementPolicyWritePreservesOrSelectsAlias(t *testing.T) {
+	ctx := context.Background()
+	manual := func() *tfTypes.ProvisionPolicy {
+		return &tfTypes.ProvisionPolicy{Manual: &tfTypes.ManualProvision{Instructions: types.StringValue("old")}}
+	}
+	reset := func() *tfTypes.ProvisionPolicy {
+		return &tfTypes.ProvisionPolicy{Unconfigured: &tfTypes.UnconfiguredProvision{}}
+	}
+	for _, tt := range []struct {
+		name              string
+		configured        *CustomAppEntitlementResourceModel
+		canonical, mirror *tfTypes.ProvisionPolicy
+		want              string
+	}{
+		{"imported mirror", &CustomAppEntitlementResourceModel{}, nil, manual(), "manual"},
+		{"refreshed mirror takes precedence", &CustomAppEntitlementResourceModel{}, manual(), delegatedCustomPolicy(), "delegated"},
+		{"legacy canonical only", &CustomAppEntitlementResourceModel{}, manual(), nil, "manual"},
+		{"canonical switch", &CustomAppEntitlementResourceModel{ProvisionPolicy: delegatedCustomPolicy()}, delegatedCustomPolicy(), manual(), "delegated"},
+		{"mirror switch", &CustomAppEntitlementResourceModel{ProvisionerPolicy: delegatedCustomPolicy()}, manual(), delegatedCustomPolicy(), "delegated"},
+		{"canonical reset", &CustomAppEntitlementResourceModel{ProvisionPolicy: reset()}, reset(), manual(), "unconfigured"},
+		{"mirror reset", &CustomAppEntitlementResourceModel{ProvisionerPolicy: reset()}, manual(), reset(), "unconfigured"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			m := &CustomAppEntitlementResourceModel{ProvisionPolicy: tt.canonical, ProvisionerPolicy: tt.mirror}
+			if d := selectCustomEntitlementPolicyForWrite(ctx, testCustomConfig(t, tt.configured), m); d.HasError() {
+				t.Fatal(d)
+			}
+			got, d := selectedOneofArm("provision_policy", customAppEntitlementPolicyArms(m.ProvisionPolicy))
+			if d.HasError() || got != tt.want {
+				t.Fatalf("got %q, want %q: %v", got, tt.want, d)
+			}
+		})
+	}
+}

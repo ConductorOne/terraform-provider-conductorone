@@ -58,7 +58,9 @@ func selectedCustomPolicyAlias(ctx context.Context, config tfsdk.Config) (string
 
 func selectCustomEntitlementPolicyForWrite(ctx context.Context, config tfsdk.Config, data *CustomAppEntitlementResourceModel) diag.Diagnostics {
 	selected, diags := selectedCustomPolicyAlias(ctx, config)
-	if !diags.HasError() && selected == "provisioner_policy" {
+	// Full updates must retain the refreshed server policy when neither alias is
+	// configured, including imported state where only the mirror exists.
+	if !diags.HasError() && (selected == "provisioner_policy" || (selected == "" && data.ProvisionerPolicy != nil)) {
 		data.ProvisionPolicy = data.ProvisionerPolicy
 	}
 	return diags
