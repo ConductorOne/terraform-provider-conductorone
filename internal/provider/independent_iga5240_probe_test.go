@@ -52,7 +52,7 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 		t.Fatal(read.Diagnostics)
 	}
 	var values map[string]tftypes.Value
-	if err := read.State.Raw.As(&values); err != nil {
+	if err := read.State.Raw.Copy().As(&values); err != nil {
 		t.Fatal(err)
 	}
 	if !values["provision_policy"].IsNull() || values["provisioner_policy"].IsNull() {
@@ -62,6 +62,13 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 	cfg := testCustomConfig(t, &CustomAppEntitlementResourceModel{AppID: types.StringValue("app1"), DisplayName: types.StringValue("renamed"), AppResourceID: types.StringValue("res1"), AppResourceTypeID: types.StringValue("type1")})
 	values["display_name"] = tftypes.NewValue(tftypes.String, "renamed")
 	proposed := tftypes.NewValue(read.State.Raw.Type(), values)
+	var prior CustomAppEntitlementResourceModel
+	if d := read.State.Get(ctx, &prior); d.HasError() || prior.DisplayName.ValueString() != "original" {
+		t.Fatalf("prior state display name changed: %v, diagnostics: %v", prior.DisplayName, d)
+	}
+	if proposed.Equal(read.State.Raw) {
+		t.Fatal("proposed rename must differ from prior state")
+	}
 	dynamic := func(v tftypes.Value) *tfprotov6.DynamicValue {
 		d, e := tfprotov6.NewDynamicValue(v.Type(), v)
 		if e != nil {
@@ -100,6 +107,10 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 	if e := p.As(&pv); e != nil {
 		t.Fatal(e)
 	}
+	var plannedName string
+	if err := pv["display_name"].As(&plannedName); err != nil || plannedName != "renamed" || p.Equal(read.State.Raw) {
+		t.Fatalf("planned rename missing: %q, error: %v", plannedName, err)
+	}
 	t.Logf("RPC planned aliases: canonical null=%t mirror null=%t fully known=%t; replacements=%d", pv["provision_policy"].IsNull(), pv["provisioner_policy"].IsNull(), pv["provisioner_policy"].IsFullyKnown(), len(planned.RequiresReplace))
 	out := &resource.UpdateResponse{State: read.State}
 	r.Update(ctx, resource.UpdateRequest{State: read.State, Plan: tfsdk.Plan{Schema: sr.Schema, Raw: p}, Config: cfg}, out)
@@ -116,6 +127,9 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 	entitlement, ok := body["entitlement"].(map[string]any)
 	if !ok {
 		t.Fatal(string(updateBody))
+	}
+	if entitlement["displayName"] != "renamed" {
+		t.Fatalf("update did not send renamed display name: %s", updateBody)
 	}
 	policy, ok := entitlement["provisionerPolicy"].(map[string]any)
 	if !ok {
@@ -146,16 +160,51 @@ func TestIndependentIGA5240ImportedPolicyUnrelatedUpdate(t *testing.T) {
 	// Terraform may mark an unconfigured computed policy unknown even after
 	// refresh. Restore it only when the entire plan otherwise equals state.
 	var unknownValues map[string]tftypes.Value
-	if err := out.State.Raw.As(&unknownValues); err != nil {
+	if err := out.State.Raw.Copy().As(&unknownValues); err != nil {
 		t.Fatal(err)
 	}
 	deprovisionerType := unknownValues["deprovisioner_policy"].Type()
 	unknownValues["deprovisioner_policy"] = tftypes.NewValue(deprovisionerType, tftypes.UnknownValue)
 	unknownPlan := tfsdk.Plan{Schema: sr.Schema, Raw: tftypes.NewValue(out.State.Raw.Type(), unknownValues)}
+	var unchangedValues map[string]tftypes.Value
+	if err := out.State.Raw.As(&unchangedValues); err != nil {
+		t.Fatal(err)
+	}
+	if !unchangedValues["deprovisioner_policy"].IsFullyKnown() || unchangedValues["deprovisioner_policy"].IsNull() {
+		t.Fatal("prior state deprovisioner must remain known and present")
+	}
+	if unknownPlan.Raw.Equal(out.State.Raw) || unknownValues["deprovisioner_policy"].IsKnown() {
+		t.Fatal("test plan must contain an unknown deprovisioner distinct from prior state")
+	}
 	modified := &resource.ModifyPlanResponse{Plan: unknownPlan}
 	r.ModifyPlan(ctx, resource.ModifyPlanRequest{State: out.State, Plan: unknownPlan, Config: cfg}, modified)
 	if modified.Diagnostics.HasError() || !modified.Plan.Raw.Equal(out.State.Raw) {
 		t.Fatalf("unchanged imported policy plan was not restored: %v", modified.Diagnostics)
+	}
+	// A real configured change must not be hidden by restoration of unknowns.
+	var changedValues map[string]tftypes.Value
+	if err := unknownPlan.Raw.Copy().As(&changedValues); err != nil {
+		t.Fatal(err)
+	}
+	changedValues["display_name"] = tftypes.NewValue(tftypes.String, "another name")
+	changedPlan := tfsdk.Plan{Schema: sr.Schema, Raw: tftypes.NewValue(out.State.Raw.Type(), changedValues)}
+	changedConfig := testCustomConfig(t, &CustomAppEntitlementResourceModel{AppID: types.StringValue("app1"), DisplayName: types.StringValue("another name"), AppResourceID: types.StringValue("res1"), AppResourceTypeID: types.StringValue("type1")})
+	changed := &resource.ModifyPlanResponse{Plan: changedPlan}
+	r.ModifyPlan(ctx, resource.ModifyPlanRequest{State: out.State, Plan: changedPlan, Config: changedConfig}, changed)
+	if changed.Diagnostics.HasError() || !changed.Plan.Raw.Equal(changedPlan.Raw) || changed.Plan.Raw.Equal(out.State.Raw) {
+		t.Fatalf("configured change was hidden: %v", changed.Diagnostics)
+	}
+	// Deferred configuration must likewise remain untouched.
+	var deferredValues map[string]tftypes.Value
+	if err := cfg.Raw.Copy().As(&deferredValues); err != nil {
+		t.Fatal(err)
+	}
+	deferredValues["display_name"] = tftypes.NewValue(tftypes.String, tftypes.UnknownValue)
+	deferredConfig := tfsdk.Config{Schema: sr.Schema, Raw: tftypes.NewValue(cfg.Raw.Type(), deferredValues)}
+	deferred := &resource.ModifyPlanResponse{Plan: unknownPlan}
+	r.ModifyPlan(ctx, resource.ModifyPlanRequest{State: out.State, Plan: unknownPlan, Config: deferredConfig}, deferred)
+	if deferred.Diagnostics.HasError() || !deferred.Plan.Raw.Equal(unknownPlan.Raw) || deferred.Plan.Raw.Equal(out.State.Raw) {
+		t.Fatalf("deferred configuration was restored: %v", deferred.Diagnostics)
 	}
 	second, err := ps.PlanResourceChange(ctx, &tfprotov6.PlanResourceChangeRequest{TypeName: "conductorone_custom_app_entitlement", PriorState: dynamic(out.State.Raw), ProposedNewState: dynamic(out.State.Raw), Config: dynamic(cfg.Raw)})
 	if err != nil {
