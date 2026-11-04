@@ -1,5 +1,40 @@
 # Known Issues
 
+## Access profile metadata updates make the computed ID unknown
+
+### Summary
+
+Without an identity-preserving plan modifier, changing an access profile's
+`description` or `published` value makes its computed `id` unknown during
+planning. References to that ID can then cause unnecessary downstream changes,
+including replacement of otherwise unchanged visibility bindings.
+
+### Fix and regeneration
+
+`patches/11-access-profile-identity-plan.patch` adds
+`stringplanmodifier.UseNonNullStateForUnknown()` only to `access_profile.id`.
+An existing non-null identity is preserved; creation and missing, null or unknown
+prior identity remain unresolved. Configured profile type changes still require
+replacement. Mutable computed fields such as `updated_at` are not preserved.
+
+The existing Speakeasy suppression overlay and `UseStateForUnknown()` also copy
+a null attribute from otherwise populated state. The non-null modifier avoids
+that behavior without changing the shared suppression helper or other resources.
+
+`make gen` applies the maintained patch after generation. After a standalone
+`speakeasy run`, apply the repository's post-generation patches with
+`make apply-patches` before validation. Do not retain a generated-file-only fix.
+
+### Regression coverage
+
+`TestAccessProfileMetadataIdentityPlan` exercises the actual registered provider
+through the public framework planning protocol, with an unpatched schema control.
+It covers description/publication updates, unchanged visibility bindings,
+create/missing/null/unknown prior identity, refreshed identity, mutable timestamps,
+destroy, no-op and configured type replacement including its separate create pass.
+The fixtures explicitly pass planned values between resources; they do not
+exercise Terraform Core's dependency graph, remote API calls or deployed behavior.
+
 ## `provider.go` is in `.genignore` — new resources don't auto-register
 
 ### Summary
