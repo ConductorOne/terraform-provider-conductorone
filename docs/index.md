@@ -108,6 +108,51 @@ The provision-policy member renames in the table also apply to `conductorone_cus
 
 `conductorone_app_entitlement` keeps its existing `*_provision` and `provisioner_assignment` block names for backward compatibility.
 
+`conductorone_automation` (`automation_steps[]`, `draft_automation_steps[]`, `triggers[]`, `draft_triggers[]`) also renames a number of oneof member attributes:
+
+| Resource path | v1.4.x attribute | v1.5.0+ attribute |
+|---|---|---|
+| `conductorone_automation` | `automation_context` | `context` |
+| `conductorone_automation` | `disabled_reason_circuit_breaker` | `circuit_breaker` |
+| `conductorone_automation.automation_steps.run_automation` | `automation_context` | `context` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_exclusion_criteria` | `exclusion_criteria` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_exclusion_list` | `exclusion_list` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_exclusion_list_cel` | `exclusion_list_cel` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_exclusion_none` | `exclusion_none` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_inclusion_access_only` | `inclusion_access_only` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_inclusion_all` | `inclusion_all` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_inclusion_criteria` | `inclusion_criteria` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_inclusion_list` | `inclusion_list` |
+| `conductorone_automation.automation_steps.create_revoke_tasks_v2` | `entitlement_inclusion_list_cel` | `inclusion_list_cel` |
+| `conductorone_automation.automation_steps.grant_entitlements` | `grant_entitlement_exclusion_criteria` | `exclusion_criteria` |
+| `conductorone_automation.automation_steps.grant_entitlements` | `grant_entitlement_exclusion_list` | `exclusion_list` |
+| `conductorone_automation.automation_steps.grant_entitlements` | `grant_entitlement_exclusion_list_cel` | `exclusion_list_cel` |
+| `conductorone_automation.automation_steps.grant_entitlements` | `grant_entitlement_exclusion_none` | `exclusion_none` |
+| `conductorone_automation.automation_steps.grant_entitlements` | `grant_entitlement_inclusion_criteria` | `inclusion_criteria` |
+| `conductorone_automation.automation_steps.grant_entitlements` | `grant_entitlement_inclusion_list` | `inclusion_list` |
+| `conductorone_automation.automation_steps.grant_entitlements` | `grant_entitlement_inclusion_list_cel` | `inclusion_list_cel` |
+| `conductorone_automation.automation_steps.generate_password` | `generate_password_policy` | `policy` |
+| `conductorone_automation.automation_steps.task_action` | `close_action` | `close` |
+| `conductorone_automation.automation_steps.task_action` | `reassign_action` | `reassign` |
+| `conductorone_automation.automation_steps.remove_from_delegation` | `user_ref1` | `replacement_user_ref` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `access_conflict_trigger` | `access_conflict` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `app_user_created_trigger` | `app_user_created` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `app_user_updated_trigger` | `app_user_updated` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `grant_deleted_trigger` | `grant_deleted` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `grant_found_trigger` | `grant_found` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `schedule_trigger` | `schedule` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `schedule_trigger_app_user` | `schedule_app_user` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `schedule_trigger_no_user` | `schedule_no_user` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `usage_based_revocation_trigger` | `usage_based_revocation` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `user_created_trigger` | `user_created` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `user_profile_change_trigger` | `user_profile_change` |
+| `conductorone_automation` (`triggers[]`, `draft_triggers[]`) | `webhook_automation_trigger` | `webhook` |
+| `conductorone_automation.triggers.webhook` | `webhook_listener_auth_capability_url` | `capability_url` |
+| `conductorone_automation.triggers.webhook` | `webhook_listener_auth_hmac` | `hmac` |
+| `conductorone_automation.triggers.webhook` | `webhook_listener_auth_jwt` | `jwt` |
+
+`grant_entitlements` and `create_revoke_tasks_v2` end up with identically-named `inclusion_list` / `exclusion_list` / `inclusion_criteria` / etc. attributes after this rename — the step type itself, not an attribute prefix, now disambiguates which block you're in.
+
 ### 1.3.0
 
 - `conductorone_access_profile` removes the deprecated top-level `grant_policy_id` attribute on both the resource and data source. Grant policy is now managed via the catalog's `AppEntitlement.grant_policy_id`.
