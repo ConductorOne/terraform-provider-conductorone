@@ -97,7 +97,7 @@ func TestRetryTripperRetriesOn429(t *testing.T) {
 	mock := &mockTripper{
 		responses: []*http.Response{resp429("0"), resp200()},
 	}
-	rt := &retryTripper{next: mock, maxRetries: 3}
+	rt := &retryTripper{next: mock, maxRetries: 3, rateLimitBudget: time.Minute}
 
 	req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
 	resp, err := rt.RoundTrip(req)
@@ -112,20 +112,124 @@ func TestRetryTripperRetriesOn429(t *testing.T) {
 	}
 }
 
+func resp503() *http.Response {
+	return &http.Response{
+		StatusCode: http.StatusServiceUnavailable,
+		Header:     http.Header{},
+		Body:       io.NopCloser(strings.NewReader("")),
+	}
+}
+
 func TestRetryTripperStopsAtMaxRetries(t *testing.T) {
 	mock := &mockTripper{
-		responses: []*http.Response{resp429("0"), resp429("0"), resp429("0")},
+		responses: []*http.Response{resp503(), resp503(), resp503()},
 	}
-	rt := &retryTripper{next: mock, maxRetries: 2}
+	rt := &retryTripper{next: mock, maxRetries: 1, rateLimitBudget: time.Minute}
 
 	req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
 	resp, err := rt.RoundTrip(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	// After 2 retries (3 total attempts), should return the 429.
+	if resp.StatusCode != http.StatusServiceUnavailable {
+		t.Errorf("expected 503 after max retries, got %d", resp.StatusCode)
+	}
+	if mock.calls != 2 {
+		t.Errorf("expected 2 calls, got %d", mock.calls)
+	}
+}
+
+// A throttled Terraform run can need more 429 retries than maxRetries allows
+// for server errors; 429s are bounded by rateLimitBudget instead.
+func TestRetryTripper429IsNotLimitedByMaxRetries(t *testing.T) {
+	mock := &mockTripper{
+		responses: []*http.Response{resp429("1"), resp200()},
+	}
+	rt := &retryTripper{next: mock, maxRetries: 0, rateLimitBudget: time.Minute}
+
+	req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
+	resp, err := rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("expected 200, got %d", resp.StatusCode)
+	}
+	if mock.calls != 2 {
+		t.Errorf("expected 2 calls, got %d", mock.calls)
+	}
+}
+
+func TestRetryTripperStops429AtBudget(t *testing.T) {
+	mock := &mockTripper{
+		responses: []*http.Response{resp429("1"), resp429("1"), resp429("1"), resp200()},
+	}
+	// The first 1s wait (plus up to 0.5s jitter) fits; a second would not.
+	rt := &retryTripper{next: mock, maxRetries: 3, rateLimitBudget: 1500 * time.Millisecond}
+
+	req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
+	resp, err := rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	if resp.StatusCode != http.StatusTooManyRequests {
-		t.Errorf("expected 429 after max retries, got %d", resp.StatusCode)
+		t.Errorf("expected 429 once the budget is spent, got %d", resp.StatusCode)
+	}
+	if mock.calls != 2 {
+		t.Errorf("expected 2 calls, got %d", mock.calls)
+	}
+}
+
+func TestRetryTripperReturns429WithoutWaitingPastLimits(t *testing.T) {
+	tests := []struct {
+		name    string
+		budget  time.Duration
+		timeout time.Duration
+	}{
+		{"retry-after exceeds budget", time.Minute, 0},
+		{"retry-after exceeds context deadline", time.Hour, 10 * time.Second},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mock := &mockTripper{
+				responses: []*http.Response{resp429("120"), resp200()},
+			}
+			rt := &retryTripper{next: mock, maxRetries: 3, rateLimitBudget: tt.budget}
+
+			ctx := context.Background()
+			if tt.timeout > 0 {
+				var cancel context.CancelFunc
+				ctx, cancel = context.WithTimeout(ctx, tt.timeout)
+				defer cancel()
+			}
+			req, _ := http.NewRequestWithContext(ctx, "GET", "http://example.com", nil)
+			start := time.Now()
+			resp, err := rt.RoundTrip(req)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if resp.StatusCode != http.StatusTooManyRequests {
+				t.Errorf("expected 429, got %d", resp.StatusCode)
+			}
+			if mock.calls != 1 {
+				t.Errorf("expected 1 call, got %d", mock.calls)
+			}
+			if elapsed := time.Since(start); elapsed > time.Second {
+				t.Errorf("expected an immediate return, took %v", elapsed)
+			}
+		})
+	}
+}
+
+func TestBackoff(t *testing.T) {
+	want := []time.Duration{time.Second, 2 * time.Second, 4 * time.Second, 8 * time.Second, 16 * time.Second, maxRetryWait, maxRetryWait}
+	for attempt, w := range want {
+		if got := backoff(attempt); got != w {
+			t.Errorf("backoff(%d) = %v, want %v", attempt, got, w)
+		}
+	}
+	if got := backoff(100); got != maxRetryWait {
+		t.Errorf("backoff(100) = %v, want %v", got, maxRetryWait)
 	}
 }
 
@@ -287,7 +391,7 @@ func TestRetryTripperRetriesUnsafeRequestsOn429(t *testing.T) {
 				}
 				return resp200(), nil
 			})
-			rt := &retryTripper{next: mock, maxRetries: 3}
+			rt := &retryTripper{next: mock, maxRetries: 3, rateLimitBudget: time.Minute}
 
 			req, _ := http.NewRequestWithContext(context.Background(), method, "http://example.com", nil)
 			req.Body = io.NopCloser(strings.NewReader(`{"query":"x"}`))
@@ -321,7 +425,7 @@ func TestRetryTripperRetriesGetBehindLoggingTransport(t *testing.T) {
 	defer srv.Close()
 
 	client := &http.Client{
-		Transport: logging.NewSubsystemLoggingHTTPTransport(subsystem, &retryTripper{next: http.DefaultTransport, maxRetries: 3}),
+		Transport: logging.NewSubsystemLoggingHTTPTransport(subsystem, &retryTripper{next: http.DefaultTransport, maxRetries: 3, rateLimitBudget: time.Minute}),
 	}
 	req, _ := http.NewRequestWithContext(context.Background(), http.MethodGet, srv.URL, nil)
 	resp, err := client.Do(req)
@@ -347,7 +451,7 @@ func TestRetryTripperRespectsContextCancellation(t *testing.T) {
 	mock := &mockTripper{
 		responses: []*http.Response{resp429("10"), resp200()},
 	}
-	rt := &retryTripper{next: mock, maxRetries: 3}
+	rt := &retryTripper{next: mock, maxRetries: 3, rateLimitBudget: time.Minute}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	req, _ := http.NewRequestWithContext(ctx, "GET", "http://example.com", nil)
