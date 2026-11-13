@@ -40,6 +40,10 @@ func NewTransport(ctx context.Context, options ...Option) (*Transport, error) {
 const (
 	defaultMaxRetries = 5
 	maxRetryWait      = 30 * time.Second
+	// defaultRateLimitBudget bounds the total time one request waits out HTTP
+	// 429s. ConductorOne's API limits refill continuously, so a throttled
+	// caller normally regains capacity within seconds to a few minutes.
+	defaultRateLimitBudget = 5 * time.Minute
 )
 
 type Transport struct {
@@ -53,6 +57,7 @@ type Transport struct {
 	mtx             sync.RWMutex
 	debug           bool
 	maxRetries      int
+	rateLimitBudget time.Duration
 }
 
 func newTransport() *Transport {
@@ -60,7 +65,8 @@ func newTransport() *Transport {
 		tlsClientConfig: &tls.Config{
 			MinVersion: tls.VersionTLS12,
 		},
-		maxRetries: defaultMaxRetries,
+		maxRetries:      defaultMaxRetries,
+		rateLimitBudget: defaultRateLimitBudget,
 	}
 }
 
@@ -157,12 +163,21 @@ func (uts *tokenSourceTripper) RoundTrip(req *http.Request) (*http.Response, err
 // retryTripper retries any request that receives HTTP 429, and idempotent
 // requests that receive HTTP 5xx or transport errors. A 429 means the server
 // rejected the request before acting on it, so retrying is safe for every
-// method, including the POST-based search APIs. It respects the Retry-After
-// header if present, falling back to exponential backoff. Context cancellation
-// is honored during the wait.
+// method, including the POST-based search APIs.
+//
+// 5xx and transport errors get at most maxRetries retries. 429s are bounded by
+// time instead: Terraform runs many operations in parallel against one API key,
+// so a plan can stay throttled for longer than a handful of quick retries.
+// The tripper keeps waiting while the total wait stays within rateLimitBudget
+// and the request context's deadline, and returns the 429 as soon as the
+// server asks for a longer wait than either allows.
+//
+// Waits use Retry-After when present, falling back to exponential backoff,
+// plus jitter. Context cancellation is honored during the wait.
 type retryTripper struct {
-	next       http.RoundTripper
-	maxRetries int
+	next            http.RoundTripper
+	maxRetries      int
+	rateLimitBudget time.Duration
 }
 
 func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -170,6 +185,9 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 
+	ctx := req.Context()
+	var throttledFor time.Duration
+	retries := 0
 	for attempt := 0; ; attempt++ {
 		if attempt > 0 && req.GetBody != nil {
 			body, err := req.GetBody()
@@ -180,34 +198,84 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 		}
 
 		resp, err := rt.next.RoundTrip(req)
-		if !shouldRetry(req, resp, err) || attempt >= rt.maxRetries {
+		if !shouldRetry(req, resp, err) {
 			return resp, err
 		}
-		if err := req.Context().Err(); err != nil {
-			return nil, err
+		if ctxErr := ctx.Err(); ctxErr != nil {
+			drainAndClose(resp)
+			return nil, ctxErr
 		}
 
 		wait := retryAfterDuration(resp)
 		if wait <= 0 {
-			// Exponential backoff: 1s, 2s, 4s, 8s, 16s, capped at 30s.
-			wait = time.Second << uint(attempt)
-			if wait > maxRetryWait {
-				wait = maxRetryWait
-			}
+			wait = backoff(attempt)
 		}
+		// Jitter first, so the limits below bound the wait actually slept.
 		wait = withJitter(wait)
 
-		if resp != nil && resp.Body != nil {
-			_, _ = io.Copy(io.Discard, resp.Body)
-			_ = resp.Body.Close()
+		if isRateLimited(resp, err) {
+			if throttledFor+wait > rt.rateLimitBudget || exceedsDeadline(ctx, wait) {
+				tflog.Warn(ctx, "ConductorOne API rate limit reached; not retrying", map[string]any{
+					"http.method":     req.Method,
+					"http.path":       req.URL.Path,
+					"retry_in":        wait.String(),
+					"throttled_total": throttledFor.String(),
+				})
+				return resp, err
+			}
+			throttledFor += wait
+			tflog.Warn(ctx, "ConductorOne API rate limit reached; retrying", map[string]any{
+				"http.method":     req.Method,
+				"http.path":       req.URL.Path,
+				"retry_in":        wait.String(),
+				"throttled_total": throttledFor.String(),
+			})
+		} else {
+			if retries >= rt.maxRetries {
+				return resp, err
+			}
+			retries++
 		}
 
+		drainAndClose(resp)
+
+		timer := time.NewTimer(wait)
 		select {
-		case <-req.Context().Done():
-			return nil, req.Context().Err()
-		case <-time.After(wait):
+		case <-ctx.Done():
+			timer.Stop()
+			return nil, ctx.Err()
+		case <-timer.C:
 		}
 	}
+}
+
+// drainAndClose releases a response that will not be returned, so its
+// connection can be reused.
+func drainAndClose(resp *http.Response) {
+	if resp != nil && resp.Body != nil {
+		_, _ = io.Copy(io.Discard, resp.Body)
+		_ = resp.Body.Close()
+	}
+}
+
+func isRateLimited(resp *http.Response, err error) bool {
+	return err == nil && resp != nil && resp.StatusCode == http.StatusTooManyRequests
+}
+
+// exceedsDeadline reports whether waiting d would run past the context's
+// deadline, in which case sleeping would only delay the inevitable error.
+func exceedsDeadline(ctx context.Context, d time.Duration) bool {
+	deadline, ok := ctx.Deadline()
+	return ok && time.Until(deadline) < d
+}
+
+// backoff returns the exponential wait before retry attempt+1: 1s, 2s, 4s,
+// 8s, 16s, then maxRetryWait.
+func backoff(attempt int) time.Duration {
+	if attempt >= 5 {
+		return maxRetryWait
+	}
+	return min(time.Second<<uint(attempt), maxRetryWait)
 }
 
 func makeRequestBodyReplayable(req *http.Request) error {
@@ -234,7 +302,7 @@ func makeRequestBodyReplayable(req *http.Request) error {
 }
 
 func shouldRetry(req *http.Request, resp *http.Response, err error) bool {
-	if err == nil && resp != nil && resp.StatusCode == http.StatusTooManyRequests {
+	if isRateLimited(resp, err) {
 		return true
 	}
 	if !isIdempotentRequest(req) {
@@ -316,7 +384,7 @@ func (t *Transport) make(ctx context.Context) (http.RoundTripper, error) {
 		return nil, err
 	}
 	var rv http.RoundTripper = baseTransport
-	rv = &retryTripper{next: rv, maxRetries: t.maxRetries}
+	rv = &retryTripper{next: rv, maxRetries: t.maxRetries, rateLimitBudget: t.rateLimitBudget}
 	t.userAgent = fmt.Sprintf("%s cone", t.userAgent)
 	rv = &debugTripper{next: rv, debug: t.debug}
 	rv = &userAgentTripper{next: rv, userAgent: t.userAgent}
