@@ -209,18 +209,19 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 		if wait <= 0 {
 			wait = backoff(attempt)
 		}
+		// Jitter first, so the limits below bound the wait actually slept.
+		wait = withJitter(wait)
 
 		if isRateLimited(resp, err) {
 			if throttledFor+wait > rt.rateLimitBudget || exceedsDeadline(ctx, wait) {
 				tflog.Warn(ctx, "ConductorOne API rate limit reached; not retrying", map[string]any{
 					"http.method":     req.Method,
 					"http.path":       req.URL.Path,
-					"retry_after":     wait.String(),
+					"retry_in":        wait.String(),
 					"throttled_total": throttledFor.String(),
 				})
 				return resp, err
 			}
-			wait = withJitter(wait)
 			throttledFor += wait
 			tflog.Warn(ctx, "ConductorOne API rate limit reached; retrying", map[string]any{
 				"http.method":     req.Method,
@@ -233,7 +234,6 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 				return resp, err
 			}
 			retries++
-			wait = withJitter(wait)
 		}
 
 		if resp != nil && resp.Body != nil {

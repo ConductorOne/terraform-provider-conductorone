@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync/atomic"
 	"testing"
+	"testing/synctest"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
@@ -219,6 +220,51 @@ func TestRetryTripperReturns429WithoutWaitingPastLimits(t *testing.T) {
 			}
 		})
 	}
+}
+
+// The budget and deadline must bound the wait actually slept, jitter
+// included. These run on synctest's virtual clock, so elapsed time is exact.
+func TestRetryTripperJitteredWaitStaysWithinLimits(t *testing.T) {
+	t.Run("budget", func(t *testing.T) {
+		for range 50 {
+			synctest.Test(t, func(t *testing.T) {
+				mock := &mockTripper{responses: []*http.Response{resp429("1")}}
+				rt := &retryTripper{next: mock, maxRetries: 3, rateLimitBudget: 1200 * time.Millisecond}
+
+				req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
+				start := time.Now()
+				resp, err := rt.RoundTrip(req)
+				if err != nil {
+					t.Fatalf("unexpected error: %v", err)
+				}
+				if resp.StatusCode != http.StatusTooManyRequests {
+					t.Fatalf("expected 429, got %d", resp.StatusCode)
+				}
+				if elapsed := time.Since(start); elapsed > rt.rateLimitBudget {
+					t.Fatalf("waited %v, past the %v budget", elapsed, rt.rateLimitBudget)
+				}
+			})
+		}
+	})
+	t.Run("context deadline", func(t *testing.T) {
+		for range 50 {
+			synctest.Test(t, func(t *testing.T) {
+				mock := &mockTripper{responses: []*http.Response{resp429("1")}}
+				rt := &retryTripper{next: mock, maxRetries: 3, rateLimitBudget: time.Hour}
+
+				ctx, cancel := context.WithTimeout(context.Background(), 1100*time.Millisecond)
+				defer cancel()
+				req, _ := http.NewRequestWithContext(ctx, "GET", "http://example.com", nil)
+				resp, err := rt.RoundTrip(req)
+				if err != nil {
+					t.Fatalf("expected the 429 rather than a context error, got %v", err)
+				}
+				if resp.StatusCode != http.StatusTooManyRequests {
+					t.Fatalf("expected 429, got %d", resp.StatusCode)
+				}
+			})
+		}
+	})
 }
 
 func TestBackoff(t *testing.T) {
