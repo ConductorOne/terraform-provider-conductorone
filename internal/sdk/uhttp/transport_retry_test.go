@@ -511,6 +511,37 @@ func TestRetryTripperRespectsContextCancellation(t *testing.T) {
 	}
 }
 
+type closeRecordingBody struct {
+	io.Reader
+	closed bool
+}
+
+func (b *closeRecordingBody) Close() error {
+	b.closed = true
+	return nil
+}
+
+// A retryable response discarded because the request was cancelled must still
+// be closed, or its connection leaks.
+func TestRetryTripperClosesResponseWhenContextCancelled(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	body := &closeRecordingBody{Reader: strings.NewReader("")}
+	next := roundTripFunc(func(*http.Request) (*http.Response, error) {
+		cancel()
+		return &http.Response{StatusCode: http.StatusTooManyRequests, Header: http.Header{}, Body: body}, nil
+	})
+	rt := &retryTripper{next: next, maxRetries: 3, rateLimitBudget: time.Minute}
+
+	req, _ := http.NewRequestWithContext(ctx, "GET", "http://example.com", nil)
+	resp, err := rt.RoundTrip(req)
+	if !errors.Is(err, context.Canceled) {
+		t.Fatalf("expected context.Canceled, got resp=%v err=%v", resp, err)
+	}
+	if !body.closed {
+		t.Error("expected the discarded response body to be closed")
+	}
+}
+
 func TestWithJitterStaysWithinBounds(t *testing.T) {
 	for _, wait := range []time.Duration{0, time.Nanosecond, time.Second, maxRetryWait} {
 		for range 1000 {

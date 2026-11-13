@@ -201,8 +201,9 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 		if !shouldRetry(req, resp, err) {
 			return resp, err
 		}
-		if err := ctx.Err(); err != nil {
-			return nil, err
+		if ctxErr := ctx.Err(); ctxErr != nil {
+			drainAndClose(resp)
+			return nil, ctxErr
 		}
 
 		wait := retryAfterDuration(resp)
@@ -236,10 +237,7 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 			retries++
 		}
 
-		if resp != nil && resp.Body != nil {
-			_, _ = io.Copy(io.Discard, resp.Body)
-			_ = resp.Body.Close()
-		}
+		drainAndClose(resp)
 
 		timer := time.NewTimer(wait)
 		select {
@@ -248,6 +246,15 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 			return nil, ctx.Err()
 		case <-timer.C:
 		}
+	}
+}
+
+// drainAndClose releases a response that will not be returned, so its
+// connection can be reused.
+func drainAndClose(resp *http.Response) {
+	if resp != nil && resp.Body != nil {
+		_, _ = io.Copy(io.Discard, resp.Body)
+		_ = resp.Body.Close()
 	}
 }
 
