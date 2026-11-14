@@ -1,0 +1,39 @@
+Subject: [PATCH] Scope request-schema string views and computed names to its resource
+
+Use the handwritten resource schema wrapper, not the shared Field OpenAPI schema,
+so API aliases and other form consumers keep their existing semantics. Restore
+server-generated nested names after refreshPlan reapplies configured values.
+
+The handwritten implementation is protected by .genignore. This patch keeps its
+constructor and Create/Update hooks attached after Speakeasy regeneration.
+
+diff --git a/internal/provider/request_schema_resource.go b/internal/provider/request_schema_resource.go
+--- a/internal/provider/request_schema_resource.go
++++ b/internal/provider/request_schema_resource.go
+@@ -26,7 +26,7 @@ var _ resource.Resource = &RequestSchemaResource{}
+ var _ resource.ResourceWithImportState = &RequestSchemaResource{}
+ 
+ func NewRequestSchemaResource() resource.Resource {
+-	return &RequestSchemaResource{}
++	return &requestSchemaResource{}
+ }
+ 
+ // RequestSchemaResource defines the resource implementation.
+@@ -1002,6 +1002,8 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateRequ
+ 		return
+ 	}
+ 
++	restoreRequestSchemaFieldNames(data, res.RequestSchemaServiceCreateResponse.GetRequestSchema().GetForm())
++
+ 	// Save updated data into Terraform state
+ 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+ }
+@@ -1121,6 +1123,8 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateRequ
+ 		return
+ 	}
+ 
++	restoreRequestSchemaFieldNames(data, res.RequestSchemaServiceUpdateResponse.GetRequestSchema().GetForm())
++
+ 	// Save updated data into Terraform state
+ 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+ }

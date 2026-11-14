@@ -30,11 +30,9 @@ import (
 // those attributes are populated only by the server, so an empty plan can hold
 // only if their SuppressDiff modifiers propagate the prior state value when the
 // planned value is unknown, instead of re-planning as "(known after apply)".
-// (Setting fields[].name explicitly would not exercise the fix — SuppressDiff
-// is a no-op for an explicit config value, and the server's normalized name
-// would then perpetually mismatch the literal.) The empty-plan assertion runs
-// on BOTH the pre-refresh plan (state vs config) and the post-refresh plan
-// (live read-back vs config).
+// Nested fields[].name is now computed-only; explicit assignments are rejected
+// before apply. The empty-plan assertion runs on BOTH the pre-refresh plan
+// (state vs config) and the post-refresh plan (live read-back vs config).
 //
 // ExpectEmptyPlanWithDriftLog is used instead of plancheck.ExpectEmptyPlan so
 // that, on a non-empty plan, the CI log names the exact attribute path(s) that
