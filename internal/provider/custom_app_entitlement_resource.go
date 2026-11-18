@@ -1875,6 +1875,12 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
+	skipDelete, releaseDiags := releaseConnectorManagedAppEntitlement(ctx, r.client, data)
+	resp.Diagnostics.Append(releaseDiags...)
+	if skipDelete || resp.Diagnostics.HasError() {
+		return
+	}
+
 	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsDeleteRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 

@@ -492,6 +492,12 @@ func (r *AppResourceResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
+	skipDelete, releaseDiags := releaseConnectorManagedAppResource(ctx, r.client, data)
+	resp.Diagnostics.Append(releaseDiags...)
+	if skipDelete || resp.Diagnostics.HasError() {
+		return
+	}
+
 	request, requestDiags := data.ToOperationsC1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
