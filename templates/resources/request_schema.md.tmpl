@@ -10,7 +10,13 @@ description: |-
 {{ .Description | trimspace }}
 
 This resource allows you to create and configure a request schema in ConductorOne.
-When creating a policy you must provide a name and at least one field. 
+String fields must configure exactly one view: `text_field`, `password_field`,
+`select_field`, `picker_field`, or `date_field`. A plain input can use
+`text_field = { multiline = false }`.
+
+Nested `fields[].name` values are computed from the display labels. Remove these
+assignments when upgrading; keep the top-level resource `name`. Existing state
+and imports retain their resource IDs, without replacement or state removal.
 
 ## Example Usage
 
