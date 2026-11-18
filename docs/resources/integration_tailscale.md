@@ -9,6 +9,8 @@ description: |-
 
 Tailscale Integration Resource
 
+~> **Deprecated:** the Tailscale v1 connector this resource targets has been retired in ConductorOne, and creating one now fails with `400 connector is retired`. Use [`conductorone_integration_tailscale_v2`](integration_tailscale_v2) instead.
+
 This resource allows you to configure an instance of the tailscale integration in ConductorOne.
 It is always associated with an application. Optionally you can specify the list of users who are owners of the integration.
 If owners are not specified, the integration will be owned by the user who created the resource.
