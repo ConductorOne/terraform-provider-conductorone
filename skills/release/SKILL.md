@@ -20,7 +20,7 @@ The provider is Speakeasy-generated from `openapi.yaml`. Most of the release is 
 | 7 | patch README install snippet to `X.Y.Z` | **yes** | See [Edge 3](#edge-3). Commit alone. |
 | 8 | `make pre-commit` | no | Final gate: build + lint + test + generate + pagination check. |
 | 9 | open PR → merge to `main` | manual | |
-| 10 | **human** cuts the tag `vX.Y.Z` via the GitHub Releases UI | **human, not agent** | See [Edge 7](#edge-7). |
+| 10 | **human** cuts the tag `vX.Y.Z` via the GitHub Releases UI | **human, not agent** | See [Edge 7](#edge-7); run the pre-tag version check on the commit first. |
 | 11 | agent offers to polish the release notes to match prior-release style | **yes, post-tag** | See [Edge 7](#edge-7). |
 
 **Segment commits** (per repo `CLAUDE.md`): manual edits before codegen; codegen alone; tfplugindocs alone. Eases rebases when you have to re-run a step.
@@ -149,6 +149,16 @@ Other patches in `patches/` follow the same pattern — when extending the spec 
 ### Edge 7 — Tagging is human-only; release-note polish is post-tag
 
 The provider's GitHub release tags are cut **by a human via the GitHub Releases UI**, not by an agent and not by a CI workflow. The human typically writes one or two short bullets as starter notes. Do not attempt to cut the tag, push a tag, or call `gh release create` as part of the release workflow.
+
+**Pre-tag version check.** Before cutting `vX.Y.Z`, confirm the commit being tagged says `X.Y.Z` everywhere the version is spelled out:
+
+```bash
+rg -n 'version: |releaseVersion: |SDKVersion: |version = "' gen.yaml .speakeasy/gen.lock internal/sdk/conductoroneapi.go README.md
+```
+
+The tag drives the binary's version (`.goreleaser.yml` injects `-X main.version={{.Version}}`), but the generated SDK strings (`SDKVersion` and the `speakeasy-sdk/terraform …` user agent), `.speakeasy/gen.lock` `releaseVersion`, and the README install snippet all come from `gen.yaml`. Tagging a commit that was never bumped therefore ships a binary that reports the new version while its own user agent and docs claim the old one. v1.7.1 and v1.7.2 shipped that way — tagged off a commit whose `gen.yaml` still read `1.7.0` — and a pushed tag cannot be corrected without cutting another release.
+
+If the strings disagree, **do not tag**. Land a version-bump PR first (canonical steps 1–7 above), then tag that merge commit.
 
 **After** the human has tagged and saved an initial release, the agent should offer to polish the notes to match the prior-release house style. The established structure (see `gh release view v1.3.0`):
 
