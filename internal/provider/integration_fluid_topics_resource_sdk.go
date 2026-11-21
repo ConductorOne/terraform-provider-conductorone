@@ -166,11 +166,14 @@ func (r *IntegrationFluidTopicsResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
-					r.FluidTopicsDomain = types.StringValue(val)
+				if _, ok := configValues["fluid-topics-domain"]; ok {
+					if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
+						r.FluidTopicsDomain = types.StringValue(val)
+					}
 				}
 
 			}
@@ -213,11 +216,14 @@ func (r *IntegrationFluidTopicsResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
-					r.FluidTopicsDomain = types.StringValue(val)
+				if _, ok := configValues["fluid-topics-domain"]; ok {
+					if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
+						r.FluidTopicsDomain = types.StringValue(val)
+					}
 				}
 
 			}

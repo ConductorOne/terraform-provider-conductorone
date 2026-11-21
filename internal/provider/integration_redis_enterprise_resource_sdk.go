@@ -178,19 +178,26 @@ func (r *IntegrationRedisEnterpriseResourceModel) RefreshFromGetResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "cluster-host"); ok {
-					r.ClusterHost = types.StringValue(val)
+				if _, ok := configValues["cluster-host"]; ok {
+					if val, ok := getStringValue(values, "cluster-host"); ok {
+						r.ClusterHost = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "api-port"); ok {
-					r.ApiPort = types.StringValue(val)
+				if _, ok := configValues["api-port"]; ok {
+					if val, ok := getStringValue(values, "api-port"); ok {
+						r.ApiPort = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 			}
@@ -233,19 +240,26 @@ func (r *IntegrationRedisEnterpriseResourceModel) RefreshFromCreateResponse(resp
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "cluster-host"); ok {
-					r.ClusterHost = types.StringValue(val)
+				if _, ok := configValues["cluster-host"]; ok {
+					if val, ok := getStringValue(values, "cluster-host"); ok {
+						r.ClusterHost = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "api-port"); ok {
-					r.ApiPort = types.StringValue(val)
+				if _, ok := configValues["api-port"]; ok {
+					if val, ok := getStringValue(values, "api-port"); ok {
+						r.ApiPort = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 			}

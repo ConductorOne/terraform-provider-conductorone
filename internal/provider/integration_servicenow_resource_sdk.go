@@ -194,12 +194,16 @@ func (r *IntegrationServicenowResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "deployment"); ok {
-					r.Deployment = types.StringValue(val)
+				if _, ok := configValues["deployment"]; ok {
+					if val, ok := getStringValue(values, "deployment"); ok {
+						r.Deployment = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
@@ -211,12 +215,16 @@ func (r *IntegrationServicenowResourceModel) RefreshFromGetResponse(resp *shared
 					}
 				}
 
-				if val, ok := getStringValue(values, "catalog_id"); ok {
-					r.CatalogId = types.StringValue(val)
+				if _, ok := configValues["catalog_id"]; ok {
+					if val, ok := getStringValue(values, "catalog_id"); ok {
+						r.CatalogId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "category_id"); ok {
-					r.CategoryId = types.StringValue(val)
+				if _, ok := configValues["category_id"]; ok {
+					if val, ok := getStringValue(values, "category_id"); ok {
+						r.CategoryId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -263,12 +271,16 @@ func (r *IntegrationServicenowResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "deployment"); ok {
-					r.Deployment = types.StringValue(val)
+				if _, ok := configValues["deployment"]; ok {
+					if val, ok := getStringValue(values, "deployment"); ok {
+						r.Deployment = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
@@ -280,12 +292,16 @@ func (r *IntegrationServicenowResourceModel) RefreshFromCreateResponse(resp *sha
 					}
 				}
 
-				if val, ok := getStringValue(values, "catalog_id"); ok {
-					r.CatalogId = types.StringValue(val)
+				if _, ok := configValues["catalog_id"]; ok {
+					if val, ok := getStringValue(values, "catalog_id"); ok {
+						r.CatalogId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "category_id"); ok {
-					r.CategoryId = types.StringValue(val)
+				if _, ok := configValues["category_id"]; ok {
+					if val, ok := getStringValue(values, "category_id"); ok {
+						r.CategoryId = types.StringValue(val)
+					}
 				}
 
 			}

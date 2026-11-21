@@ -190,27 +190,38 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) RefreshFromGetResponse
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "subscription-id"); ok {
-					r.SubscriptionId = types.StringValue(val)
+				if _, ok := configValues["subscription-id"]; ok {
+					if val, ok := getStringValue(values, "subscription-id"); ok {
+						r.SubscriptionId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "resource-group-name"); ok {
-					r.ResourceGroupName = types.StringValue(val)
+				if _, ok := configValues["resource-group-name"]; ok {
+					if val, ok := getStringValue(values, "resource-group-name"); ok {
+						r.ResourceGroupName = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "cluster-name"); ok {
-					r.ClusterName = types.StringValue(val)
+				if _, ok := configValues["cluster-name"]; ok {
+					if val, ok := getStringValue(values, "cluster-name"); ok {
+						r.ClusterName = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "tenant-id"); ok {
-					r.TenantId = types.StringValue(val)
+				if _, ok := configValues["tenant-id"]; ok {
+					if val, ok := getStringValue(values, "tenant-id"); ok {
+						r.TenantId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "sp-client-id"); ok {
-					r.SpClientId = types.StringValue(val)
+				if _, ok := configValues["sp-client-id"]; ok {
+					if val, ok := getStringValue(values, "sp-client-id"); ok {
+						r.SpClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -253,27 +264,38 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) RefreshFromCreateRespo
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "subscription-id"); ok {
-					r.SubscriptionId = types.StringValue(val)
+				if _, ok := configValues["subscription-id"]; ok {
+					if val, ok := getStringValue(values, "subscription-id"); ok {
+						r.SubscriptionId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "resource-group-name"); ok {
-					r.ResourceGroupName = types.StringValue(val)
+				if _, ok := configValues["resource-group-name"]; ok {
+					if val, ok := getStringValue(values, "resource-group-name"); ok {
+						r.ResourceGroupName = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "cluster-name"); ok {
-					r.ClusterName = types.StringValue(val)
+				if _, ok := configValues["cluster-name"]; ok {
+					if val, ok := getStringValue(values, "cluster-name"); ok {
+						r.ClusterName = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "tenant-id"); ok {
-					r.TenantId = types.StringValue(val)
+				if _, ok := configValues["tenant-id"]; ok {
+					if val, ok := getStringValue(values, "tenant-id"); ok {
+						r.TenantId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "sp-client-id"); ok {
-					r.SpClientId = types.StringValue(val)
+				if _, ok := configValues["sp-client-id"]; ok {
+					if val, ok := getStringValue(values, "sp-client-id"); ok {
+						r.SpClientId = types.StringValue(val)
+					}
 				}
 
 			}

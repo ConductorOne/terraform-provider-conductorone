@@ -183,12 +183,16 @@ func (r *IntegrationWorkatoResourceModel) RefreshFromGetResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "workato-data-center"); ok {
-					r.WorkatoDataCenter = types.StringValue(val)
+				if _, ok := configValues["workato-data-center"]; ok {
+					if val, ok := getStringValue(values, "workato-data-center"); ok {
+						r.WorkatoDataCenter = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "workato-env"); ok {
-					r.WorkatoEnv = types.StringValue(val)
+				if _, ok := configValues["workato-env"]; ok {
+					if val, ok := getStringValue(values, "workato-env"); ok {
+						r.WorkatoEnv = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["workato-disable-custom-roles-sync"]; ok {
@@ -245,12 +249,16 @@ func (r *IntegrationWorkatoResourceModel) RefreshFromCreateResponse(resp *shared
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "workato-data-center"); ok {
-					r.WorkatoDataCenter = types.StringValue(val)
+				if _, ok := configValues["workato-data-center"]; ok {
+					if val, ok := getStringValue(values, "workato-data-center"); ok {
+						r.WorkatoDataCenter = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "workato-env"); ok {
-					r.WorkatoEnv = types.StringValue(val)
+				if _, ok := configValues["workato-env"]; ok {
+					if val, ok := getStringValue(values, "workato-env"); ok {
+						r.WorkatoEnv = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["workato-disable-custom-roles-sync"]; ok {

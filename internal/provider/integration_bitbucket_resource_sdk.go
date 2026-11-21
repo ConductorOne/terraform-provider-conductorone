@@ -175,23 +175,28 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "bitbucket_username"); ok {
-					r.BitbucketUsername = types.StringValue(val)
+				if _, ok := configValues["bitbucket_username"]; ok {
+					if val, ok := getStringValue(values, "bitbucket_username"); ok {
+						r.BitbucketUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["bitbucket_workspace_list"]; ok {
+					if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.BitbucketWorkspaceList = valLists
 					}
-					r.BitbucketWorkspaceList = valLists
 				}
 
 			}
@@ -234,23 +239,28 @@ func (r *IntegrationBitbucketResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "bitbucket_username"); ok {
-					r.BitbucketUsername = types.StringValue(val)
+				if _, ok := configValues["bitbucket_username"]; ok {
+					if val, ok := getStringValue(values, "bitbucket_username"); ok {
+						r.BitbucketUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["bitbucket_workspace_list"]; ok {
+					if val, ok := getStringValue(values, "bitbucket_workspace_list"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.BitbucketWorkspaceList = valLists
 					}
-					r.BitbucketWorkspaceList = valLists
 				}
 
 			}

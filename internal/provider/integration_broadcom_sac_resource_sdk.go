@@ -172,15 +172,20 @@ func (r *IntegrationBroadcomSacResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "tenant"); ok {
-					r.Tenant = types.StringValue(val)
+				if _, ok := configValues["tenant"]; ok {
+					if val, ok := getStringValue(values, "tenant"); ok {
+						r.Tenant = types.StringValue(val)
+					}
 				}
 
 			}
@@ -223,15 +228,20 @@ func (r *IntegrationBroadcomSacResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "tenant"); ok {
-					r.Tenant = types.StringValue(val)
+				if _, ok := configValues["tenant"]; ok {
+					if val, ok := getStringValue(values, "tenant"); ok {
+						r.Tenant = types.StringValue(val)
+					}
 				}
 
 			}

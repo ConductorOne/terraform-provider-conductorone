@@ -166,12 +166,15 @@ func (r *IntegrationGreenhouseResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
-					r.GreenhouseOnBehalfOf = types.StringValue(val)
+				if _, ok := configValues["greenhouse_on_behalf_of"]; ok {
+					if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
+						r.GreenhouseOnBehalfOf = types.StringValue(val)
+					}
 				}
 
 			}
@@ -214,12 +217,15 @@ func (r *IntegrationGreenhouseResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
-					r.GreenhouseOnBehalfOf = types.StringValue(val)
+				if _, ok := configValues["greenhouse_on_behalf_of"]; ok {
+					if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
+						r.GreenhouseOnBehalfOf = types.StringValue(val)
+					}
 				}
 
 			}

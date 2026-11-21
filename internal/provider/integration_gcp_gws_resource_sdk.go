@@ -227,16 +227,22 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "customer_id"); ok {
-					r.CustomerId = types.StringValue(val)
+				if _, ok := configValues["customer_id"]; ok {
+					if val, ok := getStringValue(values, "customer_id"); ok {
+						r.CustomerId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "domain"); ok {
-					r.Domain = types.StringValue(val)
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "administrator_email"); ok {
-					r.AdministratorEmail = types.StringValue(val)
+				if _, ok := configValues["administrator_email"]; ok {
+					if val, ok := getStringValue(values, "administrator_email"); ok {
+						r.AdministratorEmail = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["skip_system_accounts"]; ok {
@@ -266,16 +272,18 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromGetResponse(resp *shared.Con
 					}
 				}
 
-				if val, ok := getStringValue(values, "project_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["project_ids"]; ok {
+					if val, ok := getStringValue(values, "project_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.ProjectIds = valLists
 					}
-					r.ProjectIds = valLists
 				}
 
 				if _, ok := configValues["enable-workforce-identity-federation"]; ok {
@@ -287,12 +295,16 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromGetResponse(resp *shared.Con
 					}
 				}
 
-				if val, ok := getStringValue(values, "workforce-identity-pool-id"); ok {
-					r.WorkforceIdentityPoolId = types.StringValue(val)
+				if _, ok := configValues["workforce-identity-pool-id"]; ok {
+					if val, ok := getStringValue(values, "workforce-identity-pool-id"); ok {
+						r.WorkforceIdentityPoolId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "workforce-identity-pool-provider-id"); ok {
-					r.WorkforceIdentityPoolProviderId = types.StringValue(val)
+				if _, ok := configValues["workforce-identity-pool-provider-id"]; ok {
+					if val, ok := getStringValue(values, "workforce-identity-pool-provider-id"); ok {
+						r.WorkforceIdentityPoolProviderId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -339,16 +351,22 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "customer_id"); ok {
-					r.CustomerId = types.StringValue(val)
+				if _, ok := configValues["customer_id"]; ok {
+					if val, ok := getStringValue(values, "customer_id"); ok {
+						r.CustomerId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "domain"); ok {
-					r.Domain = types.StringValue(val)
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "administrator_email"); ok {
-					r.AdministratorEmail = types.StringValue(val)
+				if _, ok := configValues["administrator_email"]; ok {
+					if val, ok := getStringValue(values, "administrator_email"); ok {
+						r.AdministratorEmail = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["skip_system_accounts"]; ok {
@@ -378,16 +396,18 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromCreateResponse(resp *shared.
 					}
 				}
 
-				if val, ok := getStringValue(values, "project_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["project_ids"]; ok {
+					if val, ok := getStringValue(values, "project_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.ProjectIds = valLists
 					}
-					r.ProjectIds = valLists
 				}
 
 				if _, ok := configValues["enable-workforce-identity-federation"]; ok {
@@ -399,12 +419,16 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromCreateResponse(resp *shared.
 					}
 				}
 
-				if val, ok := getStringValue(values, "workforce-identity-pool-id"); ok {
-					r.WorkforceIdentityPoolId = types.StringValue(val)
+				if _, ok := configValues["workforce-identity-pool-id"]; ok {
+					if val, ok := getStringValue(values, "workforce-identity-pool-id"); ok {
+						r.WorkforceIdentityPoolId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "workforce-identity-pool-provider-id"); ok {
-					r.WorkforceIdentityPoolProviderId = types.StringValue(val)
+				if _, ok := configValues["workforce-identity-pool-provider-id"]; ok {
+					if val, ok := getStringValue(values, "workforce-identity-pool-provider-id"); ok {
+						r.WorkforceIdentityPoolProviderId = types.StringValue(val)
+					}
 				}
 
 			}
