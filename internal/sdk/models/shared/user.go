@@ -57,8 +57,7 @@ func (e *Origin) IsExact() bool {
 	return false
 }
 
-type UserProfile struct {
-}
+type UserProfile map[string]any
 
 // UserStatus1 - The status of the user in the system.
 type UserStatus1 string

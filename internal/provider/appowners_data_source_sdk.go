@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
@@ -221,7 +222,11 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 				if listItem.Profile == nil {
 					list.Profile = nil
 				} else {
-					list.Profile = &tfTypes.UserProfile{}
+					profile := tfTypes.UserProfile(make(map[string]types.String, len(*listItem.Profile)))
+					for key, value := range *listItem.Profile {
+						profile[key] = types.StringValue(fmt.Sprintf("%v", value))
+					}
+					list.Profile = &profile
 				}
 				if listItem.RoleIds != nil {
 					list.RoleIds = make([]types.String, 0, len(listItem.RoleIds))

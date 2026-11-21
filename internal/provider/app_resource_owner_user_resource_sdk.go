@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
@@ -224,7 +225,11 @@ func (r *AppResourceOwnerUserResourceModel) RefreshFromSharedAppResourceOwnerUse
 			if resp.User.Profile == nil {
 				r.User.Profile = nil
 			} else {
-				r.User.Profile = &tfTypes.UserProfile{}
+				profile := tfTypes.UserProfile(make(map[string]types.String, len(*resp.User.Profile)))
+				for key, value := range *resp.User.Profile {
+					profile[key] = types.StringValue(fmt.Sprintf("%v", value))
+				}
+				r.User.Profile = &profile
 			}
 			if resp.User.RoleIds != nil {
 				r.User.RoleIds = make([]types.String, 0, len(resp.User.RoleIds))
