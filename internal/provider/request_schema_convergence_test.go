@@ -28,16 +28,11 @@ const suppressDescFragment = "will not change"
 // "(known after apply)" on every plan after the first apply, so a config that
 // already matched the read-back never converged.
 //
-// The fix marks each drifting attribute plan-stable via
-// x-speakeasy-param-suppress-computed-diff in overlay.yaml — exactly the
-// treatment already applied to RequestSchema.id. Speakeasy regenerates that
-// into a SuppressDiff(ExplicitSuppress) plan modifier, which propagates the
-// prior state value into the plan when the planned value is unknown (the
-// framework's UseStateForUnknown behavior) and is a no-op when the user
-// explicitly sets the attribute.
-//
-// This test FAILS on the broken HEAD (these attributes carry no plan modifier)
-// and PASSES once the overlay change is regenerated.
+// Top-level drifting attributes retain suppress-computed-diff in overlay.yaml.
+// Nested names are computed-only and preserved by the resource-level planning
+// hook, which compares the ordered labels once instead of scanning per field.
+// TestRequestSchemaNamePlanningProtocol exercises that hook through the framework
+// and also proves label edits do not retain stale server-generated names.
 func TestRequestSchemaComputedAttrsArePlanStable(t *testing.T) {
 	ctx := context.Background()
 	resp := &resource.SchemaResponse{}
@@ -64,7 +59,12 @@ func TestRequestSchemaComputedAttrsArePlanStable(t *testing.T) {
 	if !ok {
 		t.Fatalf(`fields[].name is %T, want schema.StringAttribute`, nameAttr)
 	}
-	assertStringModifiersStable(t, "fields[].name", strName.PlanModifiers)
+	if !strName.Computed || strName.Optional || strName.Required {
+		t.Fatal("fields[].name must be computed-only")
+	}
+	if _, ok := NewRequestSchemaResource().(resource.ResourceWithModifyPlan); !ok {
+		t.Fatal("fields[].name requires resource-level name-stability planning")
+	}
 }
 
 func assertStringAttrStable(t *testing.T, attrs map[string]schema.Attribute, name string) {

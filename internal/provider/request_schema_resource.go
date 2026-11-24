@@ -26,7 +26,7 @@ var _ resource.Resource = &RequestSchemaResource{}
 var _ resource.ResourceWithImportState = &RequestSchemaResource{}
 
 func NewRequestSchemaResource() resource.Resource {
-	return &RequestSchemaResource{}
+	return &requestSchemaResource{}
 }
 
 // RequestSchemaResource defines the resource implementation.
@@ -970,6 +970,10 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateR
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	resp.Diagnostics.Append(validateRequestSchemaWriteFields(ctx, request.Fields)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.RequestSchema.Create(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -1001,6 +1005,8 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateR
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	restoreRequestSchemaFieldNames(data, res.RequestSchemaServiceCreateResponse.GetRequestSchema().GetForm())
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1089,6 +1095,10 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	resp.Diagnostics.Append(validateRequestSchemaWriteFields(ctx, request.RequestSchemaServiceUpdateRequest.GetRequestSchema().GetForm().GetFields())...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.RequestSchema.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -1120,6 +1130,8 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	restoreRequestSchemaFieldNames(data, res.RequestSchemaServiceUpdateResponse.GetRequestSchema().GetForm())
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
