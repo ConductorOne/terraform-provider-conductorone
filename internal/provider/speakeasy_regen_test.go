@@ -42,8 +42,9 @@ func TestPaginationUsesAssignment(t *testing.T) {
 // fields, causing perpetual diffs. Upstream fix shipped in v1.678.1 via
 // speakeasy-api/speakeasy#1770, which switched the implementation to an
 // attribute-defined plan modifier (UseConfigValue) instead of `Computed: true`.
-// Either pattern is acceptable for our purposes — both prevent the perpetual
-// diff. The test fails only if neither is present.
+// UseConfigValue only avoids a perpetual diff when the API returns null for an
+// omitted field; fields the API always populates must stay Computed instead
+// (see TestAlwaysReturnedFieldsAreComputed). The test fails only if neither is present.
 func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	data, err := os.ReadFile("custom_app_entitlement_resource.go")
 	if err != nil {
@@ -55,7 +56,6 @@ func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	planOnlyFields := []string{
 		"provision_policy",
 		"duration_grant",
-		"duration_unset",
 	}
 
 	for _, field := range planOnlyFields {
@@ -73,6 +73,34 @@ func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 		hasUseConfigValue := strings.Contains(window, "UseConfigValue()")
 		if !hasComputed && !hasUseConfigValue {
 			t.Errorf("field %q: schema block missing both Computed: true and UseConfigValue() plan modifier (perpetual diff regression)", field)
+		}
+	}
+}
+
+// TestAlwaysReturnedFieldsAreComputed guards fields the API returns even when
+// the config omits them (e.g. duration_unset comes back as {} whenever no grant
+// duration is set). They must be Computed with no UseConfigValue modifier;
+// otherwise every plan re-nulls the read-back value and the resource drifts forever.
+func TestAlwaysReturnedFieldsAreComputed(t *testing.T) {
+	data, err := os.ReadFile("custom_app_entitlement_resource.go")
+	if err != nil {
+		t.Fatalf("reading custom_app_entitlement_resource.go: %v", err)
+	}
+	content := string(data)
+
+	for _, field := range []string{"duration_unset"} {
+		schemaPattern := fmt.Sprintf(`"%s": schema.`, field)
+		idx := strings.Index(content, schemaPattern)
+		if idx == -1 {
+			t.Fatalf("field %q: schema block not found", field)
+		}
+		end := min(idx+300, len(content))
+		window := content[idx:end]
+		if !strings.Contains(window, "Computed: true") {
+			t.Errorf("field %q: schema block must be Computed: true", field)
+		}
+		if strings.Contains(window, "UseConfigValue()") {
+			t.Errorf("field %q: schema block must not use UseConfigValue(); drop x-speakeasy-terraform-plan-only for it in overlay.yaml", field)
 		}
 	}
 }

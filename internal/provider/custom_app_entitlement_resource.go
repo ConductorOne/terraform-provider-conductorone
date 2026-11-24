@@ -590,10 +590,8 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"duration_unset": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					speakeasy_objectplanmodifier.UseConfigValue(),
-				},
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("duration_grant"),
