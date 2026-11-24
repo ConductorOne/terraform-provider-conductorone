@@ -85,7 +85,17 @@ func TestAccRequestSchemaStringViewsAndNames(t *testing.T) {
 	const address = "conductorone_request_schema.test"
 	const label = "Retool Site or URL 0"
 	var resourceID string
-	step := func(first, second, firstName, secondName string) resource.TestStep {
+	step := func(first, second, firstName, secondName string, explicitDefaults bool) resource.TestStep {
+		fieldDefaults, stringDefaults := "", ""
+		if explicitDefaults {
+			// Import reads server defaults; make them explicit for full-state
+			// equality instead of ignoring differences in the import assertion.
+			fieldDefaults = `description = ""
+      read_only = false
+      required = false`
+			stringDefaults = `default_value = ""
+        placeholder = ""`
+		}
 		return resource.TestStep{
 			Config: providerConfig + fmt.Sprintf(`
 resource "conductorone_request_schema" "test" {
@@ -93,19 +103,23 @@ resource "conductorone_request_schema" "test" {
   fields = [
     {
       display_name = %q
+      %s
       string_field = {
+        %s
         text_field = { multiline = false }
       }
     },
     {
       display_name = %q
+      %s
       string_field = {
+        %s
         text_field = { multiline = false }
       }
     }
   ]
 }
-`, first, second),
+`, first, fieldDefaults, stringDefaults, second, fieldDefaults, stringDefaults),
 			Check: resource.ComposeAggregateTestCheckFunc(
 				resource.TestCheckResourceAttrSet(address, "id"),
 				resource.TestCheckResourceAttrWith(address, "id", func(value string) error {
@@ -131,10 +145,13 @@ resource "conductorone_request_schema" "test" {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
-			step(label, label, "Retool_Site_or_URL_0_0", "Retool_Site_or_URL_0_1"),
+			// Keep the ticket's minimal configuration and empty-plan assertions.
+			step(label, label, "Retool_Site_or_URL_0_0", "Retool_Site_or_URL_0_1", false),
+			// Compare every imported attribute after explicit default coverage.
+			step(label, label, "Retool_Site_or_URL_0_0", "Retool_Site_or_URL_0_1", true),
 			{ResourceName: address, ImportState: true, ImportStateVerify: true},
-			step("Other URL", label, "Other_URL_0", "Retool_Site_or_URL_0_0"),
-			step(label, "Other URL", "Retool_Site_or_URL_0_0", "Other_URL_0"),
+			step("Other URL", label, "Other_URL_0", "Retool_Site_or_URL_0_0", true),
+			step(label, "Other URL", "Retool_Site_or_URL_0_0", "Other_URL_0", true),
 		},
 	})
 }
