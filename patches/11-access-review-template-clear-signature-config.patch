@@ -1,0 +1,21 @@
+Subject: [PATCH] Clear access review template signature config on removal
+
+Name signatureConfig in the update mask when the plan removes a block that prior
+state holds, so the API clears it. Patch 03 names it only when the plan sets it.
+
+diff --git a/internal/provider/access_review_template_resource.go b/internal/provider/access_review_template_resource.go
+index 54a81c8d..7273953f 100644
+--- a/internal/provider/access_review_template_resource.go
++++ b/internal/provider/access_review_template_resource.go
+@@ -1082,6 +1081,11 @@ func (r *AccessReviewTemplateResource) Update(ctx context.Context, req resource.
+ 	request, requestDiags := data.ToOperationsC1APIAccessreviewV1AccessReviewTemplateServiceUpdateRequest(ctx)
+ 	resp.Diagnostics.Append(requestDiags...)
+ 
++	if resp.Diagnostics.HasError() {
++		return
++	}
++	resp.Diagnostics.Append(addSignatureConfigRemovalToUpdateMask(ctx, req.State, data, request)...)
++
+ 	if resp.Diagnostics.HasError() {
+ 		return
+ 	}

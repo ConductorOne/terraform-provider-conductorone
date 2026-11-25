@@ -859,7 +859,6 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				Description: `The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES"]`,
 			},
 			"signature_config": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"meaning_of_signature": schema.StringAttribute{
@@ -1081,6 +1080,11 @@ func (r *AccessReviewTemplateResource) Update(ctx context.Context, req resource.
 
 	request, requestDiags := data.ToOperationsC1APIAccessreviewV1AccessReviewTemplateServiceUpdateRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resp.Diagnostics.Append(addSignatureConfigRemovalToUpdateMask(ctx, req.State, data, request)...)
 
 	if resp.Diagnostics.HasError() {
 		return
