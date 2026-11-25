@@ -6,12 +6,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 )
 
-// pruneCustomAppEntitlementPolicyOneofs narrows provision_policy and
-// deprovisioner_policy on data to the single arm set in configuration.
+// pruneCustomAppEntitlementPolicyOneofs narrows provision_policy,
+// deprovisioner_policy, and the duration_grant/duration_unset pair on data to
+// the single arm set in configuration.
 //
 // The deprovisioner field uses the generated CreateAppEntitlementRequestDeprovisionerPolicy
 // type, which is structurally identical to ProvisionPolicy; the conversion below
@@ -39,7 +41,23 @@ func pruneCustomAppEntitlementPolicyOneofs(ctx context.Context, config tfsdk.Con
 
 	keepOnlyOneofArm(customAppEntitlementPolicyArms(data.ProvisionPolicy), provision)
 	keepOnlyOneofArm(customAppEntitlementPolicyArms((*tfTypes.ProvisionPolicy)(data.DeprovisionerPolicy)), deprovisioner)
+	pruneCustomAppEntitlementDurationOneof(configured, data)
 	return diags
+}
+
+// pruneCustomAppEntitlementDurationOneof drops the duration arm that config
+// does not set. duration_unset is Computed (the API always returns {} when no
+// grant duration is set), so merge() copies a prior {} next to a newly
+// configured duration_grant and the API rejects the body with
+// "oneof max_grant_duration is already set". When config sets neither arm,
+// both are left as merged so an unchanged duration is not cleared.
+func pruneCustomAppEntitlementDurationOneof(configured, data *CustomAppEntitlementResourceModel) {
+	if !configured.DurationGrant.IsNull() && !configured.DurationGrant.IsUnknown() {
+		data.DurationUnset = nil
+	}
+	if configured.DurationUnset != nil {
+		data.DurationGrant = types.StringNull()
+	}
 }
 
 // customAppEntitlementPolicyArms lists the arms of p by Terraform attribute name.
