@@ -157,3 +157,52 @@ func TestPruneCustomAppEntitlementPolicyOneofs(t *testing.T) {
 		t.Fatal("deprovisioner_policy should keep only delegated")
 	}
 }
+
+func TestPruneCustomAppEntitlementDurationOneof(t *testing.T) {
+	base := func() *CustomAppEntitlementResourceModel {
+		return &CustomAppEntitlementResourceModel{
+			AppID:       types.StringValue("app1"),
+			ID:          types.StringValue("ent1"),
+			DisplayName: types.StringValue("E"),
+		}
+	}
+	unset := func() *tfTypes.CreateAppEntitlementRequestDurationUnset {
+		return &tfTypes.CreateAppEntitlementRequestDurationUnset{}
+	}
+	tests := []struct {
+		name        string
+		configGrant types.String
+		configUnset bool
+		wantGrant   types.String
+		wantUnset   bool
+	}{
+		{"config grant drops merged unset", types.StringValue("3600s"), false, types.StringValue("3600s"), false},
+		{"config unset drops merged grant", types.StringNull(), true, types.StringNull(), true},
+		{"config neither keeps merged arms", types.StringNull(), false, types.StringValue("3600s"), true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// merged carries both arms: prior state plus the planned value.
+			merged := base()
+			merged.DurationGrant = types.StringValue("3600s")
+			merged.DurationUnset = unset()
+
+			configured := base()
+			configured.DurationGrant = tt.configGrant
+			if tt.configUnset {
+				configured.DurationUnset = unset()
+			}
+
+			diags := pruneCustomAppEntitlementPolicyOneofs(context.Background(), testCustomConfig(t, configured), merged)
+			if diags.HasError() {
+				t.Fatalf("prune: %v", diags)
+			}
+			if !merged.DurationGrant.Equal(tt.wantGrant) {
+				t.Errorf("duration_grant = %v, want %v", merged.DurationGrant, tt.wantGrant)
+			}
+			if (merged.DurationUnset != nil) != tt.wantUnset {
+				t.Errorf("duration_unset set = %v, want %v", merged.DurationUnset != nil, tt.wantUnset)
+			}
+		})
+	}
+}
