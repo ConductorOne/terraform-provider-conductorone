@@ -1,0 +1,34 @@
+Subject: [PATCH] Validate resolved request-schema field types and string views before writes
+
+Configuration validators defer unknown expressions. Check the converted payload
+before each write as well, so deferred values cannot serialize to malformed
+field types or views. Keep this behavior local to request-schema resources.
+
+The handwritten validator is protected by .genignore. Apply after patch11,
+which wires the resource wrapper and preserves server-generated field names.
+
+diff --git a/internal/provider/request_schema_resource.go b/internal/provider/request_schema_resource.go
+--- a/internal/provider/request_schema_resource.go
++++ b/internal/provider/request_schema_resource.go
+@@ -970,6 +970,10 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateRequ
+ 	if resp.Diagnostics.HasError() {
+ 		return
+ 	}
++	resp.Diagnostics.Append(validateRequestSchemaWriteFields(ctx, request.Fields)...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
+ 	res, err := r.client.RequestSchema.Create(ctx, request)
+ 	if err != nil {
+ 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+@@ -1091,6 +1095,10 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateRequ
+ 	if resp.Diagnostics.HasError() {
+ 		return
+ 	}
++	resp.Diagnostics.Append(validateRequestSchemaWriteFields(ctx, request.RequestSchemaServiceUpdateRequest.GetRequestSchema().GetForm().GetFields())...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
+ 	res, err := r.client.RequestSchema.Update(ctx, *request)
+ 	if err != nil {
+ 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
