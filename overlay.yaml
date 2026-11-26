@@ -764,6 +764,13 @@ actions:
   - target: $["components"]["schemas"]["c1.api.accessconflict.v1.ConflictMonitorDeleteRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
+  # Optional-only so removing review_signature_config from config plans a removal
+  # instead of keeping prior state. Scoped to the template property: the shared
+  # ReviewSignatureConfig schema also backs conductorone_access_review. The leaves
+  # stay Computed so partially configured blocks keep the server's values.
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewTemplate"]["properties"]["signatureConfig"]
+    update:
+      x-speakeasy-param-computed: false
 
   # These API families remain SDK-only until their Terraform lifecycles are validated.
   # MCP resource registration and configuration are maintained in PR #265.
