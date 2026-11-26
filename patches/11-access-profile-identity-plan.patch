@@ -1,0 +1,21 @@
+Subject: [PATCH] Preserve a known access profile identity during updates
+
+Preserve only access_profile.id, not mutable computed fields such as updated_at.
+Use the framework's non-null modifier so creation, unknown prior identity, and
+null prior identity remain unresolved. TestAccessProfileMetadataIdentityPlan
+exercises the registered resource and an unpatched schema control through the
+public planning protocol, including downstream visibility-binding replacement.
+
+--- a/internal/provider/access_profile_resource.go
++++ b/internal/provider/access_profile_resource.go
+@@ -102,6 +102,9 @@
+ 			},
+ 			"id": schema.StringAttribute{
+-				Computed:    true,
++				Computed: true,
++				PlanModifiers: []planmodifier.String{
++					stringplanmodifier.UseNonNullStateForUnknown(),
++				},
+ 				Description: `The id of the request catalog.`,
+ 			},
+ 			"published": schema.BoolAttribute{

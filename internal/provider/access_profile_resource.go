@@ -101,7 +101,10 @@ func (r *AccessProfileResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `List of serialized related objects.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseNonNullStateForUnknown(),
+				},
 				Description: `The id of the request catalog.`,
 			},
 			"published": schema.BoolAttribute{
